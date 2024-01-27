@@ -17,5 +17,8 @@
 ### Perceptron
 - It is one unit of a Artificial neural Network (ANN)
   - Simulates the behavior of a single neuron
+- It is a form of supervised learning and the output is binary 
 #### Steps 
-1) ddd
+1) The 'cell' takes inputs and weights
+2) Multiply the inputs and weights and sum to create a weighted sum
+3) The weighted sum is fed into a activation function which returns the models output 
