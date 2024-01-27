@@ -13,3 +13,9 @@
 ### Naive Bayes
 - Assumes all features are mutually independent
 - Assumes all features follow a Gaussian distribution
+
+### Perceptron
+- It is one unit of a Artificial neural Network (ANN)
+  - Simulates the behavior of a single neuron
+#### Steps 
+1) ddd
