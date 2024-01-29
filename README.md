@@ -23,4 +23,11 @@ Each file contains an implementation of the model using pure Python and NumPy. A
 #### Steps 
 1) The 'cell' takes inputs and weights
 2) Multiply the inputs and weights and sum to create a weighted sum
-3) The weighted sum is fed into a activation function which returns the models output 
+3) The weighted sum is fed into a activation function which returns the models output
+
+### Support Vector Machine
+Goal: Use a linear model to find a decision boundary (hyperplane) that best separates the data 
+- The best hyperplane will be determined based on the distance between it and the data on either side of the plane
+
+Note: The difference between the accuracy scores is because Sklearn uses regularization
+  - To make scores equal; add 'C=0.0001' to the svm_model as an argument 
