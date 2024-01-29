@@ -1,3 +1,5 @@
+Each file contains an implementation of the model using pure Python and NumPy. Additionally, it includes a test with either a built-in dataset or a created dataset. Lastly, there is an implementation of the model using Sklearn to compare the results and assess any differences, if present. 
+
 ### Linear Regression
 - temp
 
