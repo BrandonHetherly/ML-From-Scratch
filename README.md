@@ -1,16 +1,10 @@
 Each file contains an implementation of the model using pure Python and NumPy. Additionally, it includes a test with either a built-in dataset or a created dataset. Lastly, there is an implementation of the model using Sklearn to compare the results and assess any differences, if present. 
 
-### Linear Regression
-- temp
-
 ### Logistic Regression
 - I use gradient descent for optimization
 - Accuracy scores differ between models:
   - Sklearns model does not use gradient descent
   - Sklearn defaults to L2 regularization (Ridge), which is not present in the class (I will add regularization in the future)
-
-### KNN
-- temp
 
 ### Naive Bayes
 - Assumes all features are mutually independent
