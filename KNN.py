@@ -2,31 +2,34 @@
 import numpy as np
 from collections import Counter
 
-def euclidean_distance(x1, x2):
-    return np.sqrt(np.sum((x1-x2)**2))
+def calc_euclidean_distance(vec1, vec2):
+    return np.sqrt(np.sum((vec1 - vec2) ** 2))
 
-class KNN:
-    def __init__(self, k=3):
-        self.k = k
+class KNearestNeighbors:
+    def __init__(self, num_neighbors=3):
+        self.num_neighbors = num_neighbors
 
-    def fit(self, X, y):
-        self.X_train = X
-        self.y_train = y
-   
-    def predict(self, X):
-        predicted_labels = [self._predict(x) for x in X]
-        return np.array(predicted_labels)
-   
-    def _predict(self, x):
-        # Find distances
-        distances = [euclidean_distance(x, x_train) for x_train in self.X_train]
-        # get k-nearest samples
-        k_indices = np.argsort(distances)[:self.k]
-        k_nearest_labels = [self.y_train[i] for i in k_indices]
-        # majority vote (most common label)
-        most_common = Counter(k_nearest_labels).most_common(1)
-        return most_common[0][0]
+    def fit(self, training_data, training_labels):
+        self.training_data = training_data
+        self.training_labels = training_labels
 
+    def predict(self, test_data):
+        predictions = [self._make_prediction(single_test) for single_test in test_data]
+        return np.array(predictions)
+
+    def _make_prediction(self, single_test):
+        # Calculate distances between the test instance and each training instance
+        all_distances = [calc_euclidean_distance(single_test, train_instance) for train_instance in self.training_data]
+        
+        # Identify indices of the k closest training instances
+        closest_indices = np.argsort(all_distances)[:self.num_neighbors]
+        
+        # Retrieve the labels for the k nearest neighbors
+        closest_labels = [self.training_labels[i] for i in closest_indices]
+        
+        # Determine the most frequent label among the nearest neighbors
+        most_frequent_label = Counter(closest_labels).most_common(1)[0][0]
+        return most_frequent_label
 
 #### Testing ####
 from sklearn import datasets
@@ -36,8 +39,8 @@ iris = datasets.load_iris()
 X, y = iris.data, iris.target
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=12)
 
-clf = KNN(k=3)
-clf.fit(X=X_train, y=y_train)
+clf = KNearestNeighbors(num_neighbors=3)
+clf.fit(training_data=X_train, training_labels=y_train)
 predictions = clf.predict(X_test)
 
 accuracy = np.sum(predictions == y_test) / len(y_test)

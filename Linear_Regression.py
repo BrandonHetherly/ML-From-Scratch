@@ -3,49 +3,46 @@ from sklearn.model_selection import train_test_split
 from sklearn import datasets
 import matplotlib.pyplot as plt
 
-class linear_regression:
+class LinearRegressionModel:
+    def __init__(self, learning_rate=0.001, iterations=1000):
+        self.learning_rate = learning_rate
+        self.iterations = iterations
+        self.coefficients = None
+        self.intercept = None
 
-    def __init__(self, lr=0.001, n_iters=1000):
-        self.lr = lr
-        self.n_iters = n_iters
-        self.weights = None
-        self.bias = None
-   
-    def fit(self, X, y):
-        # parameters
-        n_samples, n_features = X.shape
-        self.weights = np.zeros(n_features)
-        self.bias = 0
+    def train(self, X, y):
+        # Initializing parameters
+        num_samples, num_features = X.shape
+        self.coefficients = np.zeros(num_features)
+        self.intercept = 0
 
-        # gradent decent
-        for _ in range(self.n_iters):
-            # apox
-            y_predicted = np.dot(X, self.weights) + self.bias
+        # Performing gradient descent
+        for _ in range(self.iterations):
+            # Predicted values
+            predictions = np.dot(X, self.coefficients) + self.intercept
 
-            # dir/gradent of cost function
-            dw = (1/n_samples) * np.dot(X.T, (y_predicted - y))
-            db = (1/n_samples) * np.sum(y_predicted - y)
+            # Gradients of loss function
+            coef_gradient = (1 / num_samples) * np.dot(X.T, (predictions - y))
+            intercept_gradient = (1 / num_samples) * np.sum(predictions - y)
 
-            self.weights -= self.lr * dw
-            self.bias -= self.lr * db
+            # Updating parameters
+            self.coefficients -= self.learning_rate * coef_gradient
+            self.intercept -= self.learning_rate * intercept_gradient
 
     def predict(self, X):
-        y_predicted = np.dot(X, self.weights) + self.bias
-        return y_predicted
+        return np.dot(X, self.coefficients) + self.intercept
 
-def mse(y, y_hat):
-   return np.mean((y - y_hat)**2)
+def mean_squared_error(actual, predicted):
+    return np.mean((actual - predicted) ** 2)
 
-def r_squared(actual_values, predicted_values):
-    mean_actual = np.mean(actual_values)
+def calculate_r_squared(actual, predicted):
+    actual_mean = np.mean(actual)
 
-    # Total Sum of Squares (TSS)
-    tss = np.sum((actual_values - mean_actual)**2)
-    # Residual Sum of Squares (RSS)
-    rss = np.sum((actual_values - predicted_values)**2)
+    # Calculating TSS and RSS
+    total_sum_of_squares = np.sum((actual - actual_mean) ** 2)
+    residual_sum_of_squares = np.sum((actual - predicted) ** 2)
 
-    r_squared = 1 - (rss / tss)
-    return r_squared
+    return 1 - (residual_sum_of_squares / total_sum_of_squares)
 
 
 ## generate data ##
@@ -58,12 +55,12 @@ plt.scatter(X, y)
 # plt.show()
 
 ## test ##
-reg = linear_regression(lr=.01)
-reg.fit(X=X_train, y=y_train)
+reg = LinearRegressionModel(learning_rate=.01)
+reg.train(X=X_train, y=y_train)
 predicted_val = reg.predict(X_test)
-mse_value = mse(y_test, predicted_val)
+mse_value = mean_squared_error(y_test, predicted_val)
 print(f"MSE: {round(mse_value,3)}")
-print(f"R-squared: {round(r_squared(y_test, predicted_val), 3)}")
+print(f"R-squared: {round(calculate_r_squared(y_test, predicted_val), 3)}")
 
 
 #### Compair using Sklearn ####
